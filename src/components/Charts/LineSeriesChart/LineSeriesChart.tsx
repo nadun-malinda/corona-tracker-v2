@@ -30,8 +30,6 @@ const LineSeriesChart = () => {
                     <stop offset='100%' stopColor='blue' stopOpacity={0.3} />
                 </linearGradient>
             </GradientDefs>
-            <VerticalGridLines />
-            <HorizontalGridLines />
             {/* <VerticalBarSeries barWidth={1} data={data} /> */}
             <AreaSeries
                 data={data}
