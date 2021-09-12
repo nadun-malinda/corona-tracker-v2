@@ -1,0 +1,22 @@
+.StatCard {
+    &:global(.ant-statistic) {
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+            0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        border-radius: 4px;
+        padding: 8px;
+        line-height: 1.4;
+        border-left: 8px solid;
+        margin-bottom: 8px;
+    }
+
+    :global(.ant-statistic-title) {
+        text-transform: uppercase;
+        font-size: 12px;
+        font-weight: 600;
+    }
+
+    :global(.ant-statistic-content) {
+        font-size: 18px;
+        font-weight: 600;
+    }
+}

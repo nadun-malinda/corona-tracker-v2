@@ -1,0 +1,62 @@
+.CountryDertails {
+    position: relative;
+    margin-top: 20px;
+    border-radius: 6px;
+    background-color: #eee;
+    // box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    //     0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+        0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+
+    .FlagWrap {
+        height: 160px;
+
+        .Flag {
+            width: 100%;
+        }
+    }
+
+    .Skeleton {
+        height: 160px;
+    }
+}
+
+.List {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    margin: 15px 0 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    bottom: 0;
+    background-image: linear-gradient(
+        to top,
+        rgba(0, 0, 0, 1),
+        rgba(0, 0, 0, 0)
+    );
+    color: #fff;
+    padding: 10px;
+
+    h2 {
+        color: #fff;
+        margin-bottom: 0;
+    }
+
+    :global(.ant-statistic) {
+        line-height: 1;
+
+        :global(.ant-statistic-title) {
+            text-transform: uppercase;
+            font-size: 12px;
+            font-weight: 600;
+            color: #fff;
+        }
+        :global(.ant-statistic-content) {
+            color: #fff;
+            font-size: 18px;
+            font-weight: 600;
+        }
+    }
+}

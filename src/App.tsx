@@ -1,26 +1,17 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import Map from './components/Map/Map'
+import Board from './components/Board/Board'
+import Controls from './components/Controls/Controls'
+import 'antd/dist/antd.css'
+import './styles/styles.scss'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+const App = () => {
+    return (
+        <div>
+            <Board />
+            <Controls />
+            <Map />
+        </div>
+    )
 }
 
-export default App;
+export default App
