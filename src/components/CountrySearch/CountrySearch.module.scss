@@ -1,5 +1,55 @@
+@import '../../styles//mixins';
+
 .CountrySearch {
+    position: absolute;
+    z-index: 1;
+    left: calc(50vw - 150px);
+    top: 10px;
+    width: 300px;
+    background-color: #202124;
+    padding: 10px 10px 20px 20px;
+
     .Search {
         width: 100%;
+
+        :global(.ant-select-selector) {
+            // background-color: #202124 !important;
+            color: #bdc1c6;
+            border-radius: 0 !important;
+            // border-color: #5f6368 !important;
+            border: 2px solid;
+            border-color: #f5c600 !important;
+            background-color: #030f1c !important;
+
+            &::before {
+                @include dot-bg();
+                content: '';
+                width: 102%;
+                height: 85%;
+                position: absolute;
+                left: -14px;
+                top: 19px;
+                z-index: -1;
+            }
+
+            :global(.ant-select-selection-placeholder) {
+                color: #bdc1c66e;
+                font-size: 14px;
+            }
+        }
+    }
+}
+
+.Dropdown {
+    background-color: #202124 !important;
+
+    :global(.ant-select-item-option-content) {
+        color: #bdc1c6;
+    }
+    :global(.ant-select-item) {
+        &:global(.ant-select-item-option-active),
+        &:global(.ant-select-item-option):hover {
+            background-color: #000;
+        }
     }
 }

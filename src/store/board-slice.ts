@@ -1,10 +1,23 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { AppThunk } from '.'
 import axios from 'axios'
+import { convertCountryA2ToA3 } from '../utils/utils'
 
 interface Coordinates {
     latitude: number
     longitude: number
+}
+
+interface Timeline {
+    active: number
+    confirmed: number
+    date: string
+    deaths: number
+    new_confirmed: number
+    new_deaths: number
+    new_recovered: number
+    recovered: number
+    updated_at: Date
 }
 
 interface SelectedCountry {
@@ -22,11 +35,29 @@ interface SelectedCountry {
         deaths: number
         recovered: number
     }
+    timeline: Timeline[]
+    alpha3Code: string
 }
 
 interface BoardState {
     selectedCountry: SelectedCountry
     loading: boolean
+}
+
+export interface CovidCountry {
+    code: string
+    coordinates: Coordinates
+    latest_data: any
+    name: string
+    population: number
+    today: any
+    updated_at: Date
+}
+
+interface CovidCountriesResponse {
+    data: {
+        data: CovidCountry[]
+    }
 }
 
 const initialState: BoardState = {
@@ -44,7 +75,9 @@ const initialState: BoardState = {
             critical: 0,
             deaths: 0,
             recovered: 0
-        }
+        },
+        timeline: [],
+        alpha3Code: ''
     },
     loading: false
 }
@@ -75,15 +108,22 @@ export const setLoading = (loading: boolean) => ({
 })
 
 export const fetchCountryCovidData = (countryCode: string): AppThunk => {
-    return async (dispatch, getState) => {
+    return async (dispatch, _getState) => {
         dispatch(setLoading(true))
         try {
             const response = await axios.get(
                 `https://corona-api.com/countries/${countryCode}`
             )
             console.log('covid response; ', response)
-            const { name, population, coordinates, today, latest_data } =
-                response.data.data
+            const {
+                name,
+                population,
+                coordinates,
+                today,
+                latest_data,
+                timeline,
+                code
+            } = response.data.data
             dispatch(
                 setSelectedCountry({
                     name,
@@ -101,7 +141,9 @@ export const fetchCountryCovidData = (countryCode: string): AppThunk => {
                         critical: latest_data.critical,
                         deaths: latest_data.deaths,
                         recovered: latest_data.recovered
-                    }
+                    },
+                    timeline: timeline,
+                    alpha3Code: convertCountryA2ToA3(code)
                 })
             )
             dispatch(setLoading(false))
@@ -109,6 +151,14 @@ export const fetchCountryCovidData = (countryCode: string): AppThunk => {
             console.log('error: ', error)
             dispatch(setLoading(false))
         }
+    }
+}
+
+export const fetchCovidCountries = (): AppThunk<
+    Promise<CovidCountriesResponse>
+> => {
+    return async (_dispatch, _useSttae) => {
+        return await axios.get(`https://corona-api.com/countries`)
     }
 }
 

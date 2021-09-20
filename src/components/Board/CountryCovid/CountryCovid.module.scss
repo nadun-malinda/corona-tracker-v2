@@ -1,15 +1,29 @@
+@import '../../../styles/mixins';
+
 .CountryCovid {
     margin-top: 20px;
 
     .MainStat {
         box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
             0 2px 4px -1px rgba(0, 0, 0, 0.06);
-        border-radius: 4px;
-        padding: 8px;
-        margin-bottom: 10px;
+        padding: 10px;
+        margin-bottom: 30px;
+        border: 1px solid #5f6368;
+        background-color: #202124;
 
         :global(.ant-statistic-content-suffix) {
             width: 100%;
+        }
+
+        &::after {
+            @include dot-bg();
+            content: '';
+            width: 100%;
+            height: 88%;
+            position: absolute;
+            left: -14px;
+            top: 19px;
+            z-index: -1;
         }
     }
 }

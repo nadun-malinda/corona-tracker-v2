@@ -1,39 +1,42 @@
 import { useState, useEffect } from 'react'
 import { GeoJsonLayer } from 'deck.gl'
-import { FeatureCollection } from '../../interfaces'
-import dataFile from '../../data/countries.json'
-import { convertCountryA3ToA2 } from '../../utils/utils'
+import { useAppSelector, useAppDispatch } from '../../store/hooks'
+import { Feature, FeatureCollection } from '../../interfaces'
+import { fitToBounds } from '../../store/map-slice'
+import { setCountryAlpha3Code } from '../../store/country-slice'
 
-const boundaryData = dataFile as FeatureCollection
-
-const useGeoJsonLayer = () => {
+const useGeoJsonLayer = (data: FeatureCollection): any => {
     const [layer, setLayer] = useState({})
-    const [countryCode, setCountryCode] = useState('LK')
+    const { alpha3Code } = useAppSelector((state) => state.country)
+    const dispatch = useAppDispatch()
 
     useEffect(() => {
         const lr = new GeoJsonLayer({
             id: 'countries',
-            data: boundaryData,
+            data: data,
             stroked: true,
             filled: true,
             pickable: true,
             autoHighlight: true,
+            highlightColor: [245, 198, 0, 10],
             getFillColor: [0, 0, 0, 0],
-            getLineColor: [34, 96, 169, 200],
-            getLineWidth: 1,
-            lineWidthScale: 20,
-            lineWidthMinPixels: 2,
-            onClick: (info: any) => {
-                const cc = convertCountryA3ToA2(info.object.properties.ISO_A3)
+            getLineColor: (d: any) => {
+                return d.properties.ISO_A3 === alpha3Code
+                    ? [245, 198, 0, 255]
+                    : [0, 0, 0, 0]
+            },
+            lineWidthMinPixels: 1,
+            onClick: (info: any | { object: Feature }) => {
                 console.log('info: ', info)
-                setCountryCode(cc)
+                dispatch(setCountryAlpha3Code(info.object.properties.ISO_A3))
+                dispatch(fitToBounds(info.object.properties.ISO_A3))
             }
         })
 
         setLayer(lr)
-    }, [])
+    }, [alpha3Code, data, dispatch])
 
-    return { layer, countryCode }
+    return { layer }
 }
 
 export default useGeoJsonLayer

@@ -1,0 +1,27 @@
+@mixin dot-bg {
+    background: linear-gradient(90deg, #161122 5px, transparent 0%) center,
+        linear-gradient(#161122 5px, transparent 1%) center, #a799cc;
+    background-size: 6px 6px;
+}
+
+// $dot-size: 1px;
+// $dot-space: 22px;
+// $bg-color: hsl(256,33,10);
+// $dot-color: hsl(256,33,70);
+@mixin dot-bg(
+    $bg-color: #202124,
+    $dot-color: #ccc,
+    $dot-size: 1px,
+    $dot-space: 6px
+) {
+    background: linear-gradient(
+                90deg,
+                $bg-color ($dot-space - $dot-size),
+                transparent 0%
+            )
+            center,
+        linear-gradient($bg-color ($dot-space - $dot-size), transparent 1%)
+            center,
+        $dot-color;
+    background-size: $dot-space $dot-space;
+}

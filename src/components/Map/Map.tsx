@@ -1,60 +1,40 @@
-import { useEffect } from 'react'
+import { useState, useCallback } from 'react'
 import { useAppSelector, useAppDispatch } from '../../store/hooks'
 import { setViewState } from '../../store/map-slice'
-import { fetchCountryCovidData } from '../../store/board-slice'
 import DeckGL from '@deck.gl/react'
 import { FlyToInterpolator, MapView } from '@deck.gl/core'
 import { StaticMap } from 'react-map-gl'
-import { getFitBounds } from '../../utils/utils'
 import useGeoJsonLayer from '../Layers/GeoJsonLayerHook'
-import { ViewState } from '../../interfaces'
-import { fetchCountryByName } from '../../store/country-slice'
+import { ViewState, FeatureCollection } from '../../interfaces'
+import { BOARD_WIDTH } from '../../consts'
+import dataFile from '../../data/countries.json'
+
+const boundaryData = dataFile as FeatureCollection
 
 const Map = () => {
-    const { mapStyle, viewState } = useAppSelector((state) => state.map)
-    const { layer, countryCode } = useGeoJsonLayer()
+    const [layerData] = useState<FeatureCollection>(boundaryData)
+    const { viewState } = useAppSelector((state) => state.map)
+    const { layer } = useGeoJsonLayer(layerData)
     const dispatch = useAppDispatch()
 
-    useEffect(() => {
-        const { width, height, longitude, latitude, zoom } = getFitBounds(
-            'LKA',
-            {
-                bearing: 0,
-                latitude: 7.100892668623654,
-                longitude: 80.15625000000001,
-                pitch: 0,
-                zoom: 4,
-                width: window.innerWidth,
-                height: window.innerHeight
-            }
-        )
-        dispatch(setViewState({ width, height, latitude, longitude, zoom }))
-    }, [dispatch])
-
-    useEffect(() => {
-        dispatch(fetchCountryCovidData(countryCode))
-        dispatch(fetchCountryByName('Sri Lanka'))
-    }, [countryCode, dispatch])
-
-    const onViewStateChangeHandler = ({
-        viewState
-    }: {
-        viewState: ViewState
-    }) => {
-        const { bearing, width, height, latitude, longitude, pitch, zoom } =
-            viewState
-        dispatch(
-            setViewState({
-                bearing,
-                width,
-                height,
-                latitude,
-                longitude,
-                pitch,
-                zoom
-            })
-        )
-    }
+    const onViewStateChangeHandler = useCallback(
+        ({ viewState }: { viewState: ViewState }) => {
+            const { bearing, width, height, latitude, longitude, pitch, zoom } =
+                viewState
+            dispatch(
+                setViewState({
+                    bearing,
+                    width,
+                    height,
+                    latitude,
+                    longitude,
+                    pitch,
+                    zoom
+                })
+            )
+        },
+        [dispatch]
+    )
 
     return (
         <div>
@@ -66,18 +46,27 @@ const Map = () => {
                 views={[
                     new MapView({
                         id: 'map',
-                        x: 340,
-                        width: window.innerWidth - 340,
+                        x: BOARD_WIDTH,
+                        width: window.innerWidth - BOARD_WIDTH,
                         controller: true
                     })
                 ]}
                 onViewStateChange={onViewStateChangeHandler}
                 controller={true}
-                // @ts-ignore
+                getCursor={(interactiveState: any) => {
+                    if (interactiveState.isHovering) {
+                        return 'pointer'
+                    }
+                    if (interactiveState.isDragging) {
+                        return 'grabbing'
+                    } else {
+                        return 'grab'
+                    }
+                }}
                 layers={[layer]}
             >
                 <StaticMap
-                    mapStyle={`mapbox://styles/mapbox/${mapStyle}`}
+                    mapStyle={`mapbox://styles/nadun-malinda/cktn4hraw7jst18wbt6udj2yc`}
                     mapboxApiAccessToken={
                         process.env.REACT_APP_MAPBOX_API_TOKEN
                     }

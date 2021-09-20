@@ -1,8 +1,11 @@
+@import '../../styles/variables';
+
 .Board {
     z-index: 1;
     position: absolute;
-    width: 340px;
-    height: calc(100vh - 20px);
-    background-color: #fff;
+    width: $board-width;
+    height: calc(100vh);
+    overflow: auto;
+    background-color: #202124;
     padding: 20px;
 }

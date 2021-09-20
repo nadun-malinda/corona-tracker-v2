@@ -1,17 +1,23 @@
 import { useState, useEffect } from 'react'
 import { useAppSelector, useAppDispatch } from '../../store/hooks'
 import { setViewState } from '../../store/map-slice'
-import { fetchCountryCovidData } from '../../store/board-slice'
 import { AutoComplete } from 'antd'
-import axios from 'axios'
 import { getFitBounds } from '../../utils/utils'
 import useDebounce from '../../utils/deBounce'
 import classes from './CountrySearch.module.scss'
-import { setCountryData } from '../../store/country-slice'
+import {
+    fetchCountryByName,
+    CountryData as CountryDataInterface
+} from '../../store/country-slice'
+
+interface Option {
+    value: string
+    data: CountryDataInterface
+}
 
 const CountrySearch = () => {
     const [text, setText] = useState('')
-    const [options, setOptions] = useState<{ value: string }[]>([])
+    const [options, setOptions] = useState<Option[]>([])
     const debounceSearchText = useDebounce(text, 300)
 
     const { viewState } = useAppSelector((state) => state.map)
@@ -23,12 +29,11 @@ const CountrySearch = () => {
             return
         }
 
-        axios
-            .get(`https://restcountries.eu/rest/v2/name/${debounceSearchText}`)
+        dispatch(fetchCountryByName(debounceSearchText))
             .then((res) => {
-                console.log('res: ', res)
+                console.log('country search: ', res)
                 setOptions(
-                    res.data.map((country: any) => {
+                    res.data.map((country) => {
                         return {
                             value: country.name,
                             data: country
@@ -37,20 +42,18 @@ const CountrySearch = () => {
                 )
             })
             .catch((err) => {
-                console.log('err: ', err)
+                console.log('country search err: ', err)
             })
-    }, [debounceSearchText])
+    }, [debounceSearchText, dispatch])
 
-    const onSelectHanlder = (value: string, option: any) => {
+    const onSelectHandler = (value: string, option: Option | any) => {
         console.log('on select: ', option)
 
-        const { flag, population, alpha2Code, alpha3Code } = option.data
+        const { alpha3Code } = option.data
         const { longitude, latitude, zoom } = getFitBounds(
             alpha3Code,
             viewState
         )
-        dispatch(fetchCountryCovidData(alpha2Code))
-        dispatch(setCountryData({ name: value, flag, population }))
         dispatch(setViewState({ latitude, longitude, zoom }))
     }
 
@@ -62,10 +65,10 @@ const CountrySearch = () => {
         <div className={classes.CountrySearch}>
             <AutoComplete
                 className={classes.Search}
+                dropdownClassName={classes.Dropdown}
                 options={options}
-                allowClear={true}
                 size='large'
-                onSelect={onSelectHanlder}
+                onSelect={onSelectHandler}
                 onSearch={onSearchHandler}
                 placeholder='Search for country ...'
             />

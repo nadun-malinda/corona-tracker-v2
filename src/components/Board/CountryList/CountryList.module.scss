@@ -1,0 +1,65 @@
+@import '../../../styles/mixins';
+
+.List {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
+    .ListItem {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        position: relative;
+        background-color: #10162f;
+        padding: 8px 14px;
+        color: #eee;
+        border: 3px solid #f5c600;
+
+        &:hover {
+            cursor: pointer;
+        }
+
+        .Stats {
+            display: flex;
+
+            :global(.ant-statistic):first-of-type {
+                margin-right: 20px;
+            }
+
+            :global(.ant-statistic-title) {
+                color: #fff;
+                font-size: 10px;
+                margin-bottom: 0px;
+            }
+            :global(.ant-statistic-content) {
+                color: #fff;
+                font-size: 14px;
+            }
+        }
+
+        .Flag {
+            width: 20px;
+            height: 13px;
+            margin-right: 6px;
+        }
+
+        .Name {
+            margin-bottom: 0;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+
+        &::before {
+            @include dot-bg();
+            content: '';
+            width: 100%;
+            height: 88%;
+            position: absolute;
+            left: -15px;
+            top: 18px;
+            z-index: -1;
+        }
+    }
+}

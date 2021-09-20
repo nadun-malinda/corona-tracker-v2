@@ -3,14 +3,17 @@ interface Geometry {
     type?: string
 }
 
-interface Features {
+export interface Feature {
     geometry: Geometry
-    properties: any
+    properties: {
+        ISO_A3?: string
+        ADMIN?: string
+    }
 }
 
 export interface FeatureCollection {
     type: 'FeatureCollection'
-    features: Features[]
+    features: Feature[]
 }
 
 export type MapStyle =
