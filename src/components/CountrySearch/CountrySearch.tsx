@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react'
-import { useAppSelector, useAppDispatch } from '../../store/hooks'
-import { setViewState } from '../../store/map-slice'
+import { useAppDispatch } from '../../store/hooks'
+import { fitToBounds } from '../../store/map-slice'
 import { AutoComplete } from 'antd'
-import { getFitBounds } from '../../utils/utils'
 import useDebounce from '../../utils/deBounce'
 import classes from './CountrySearch.module.scss'
 import {
@@ -19,8 +18,6 @@ const CountrySearch = () => {
     const [text, setText] = useState('')
     const [options, setOptions] = useState<Option[]>([])
     const debounceSearchText = useDebounce(text, 300)
-
-    const { viewState } = useAppSelector((state) => state.map)
     const dispatch = useAppDispatch()
 
     useEffect(() => {
@@ -49,12 +46,8 @@ const CountrySearch = () => {
     const onSelectHandler = (value: string, option: Option | any) => {
         console.log('on select: ', option)
 
-        const { alpha3Code } = option.data
-        const { longitude, latitude, zoom } = getFitBounds(
-            alpha3Code,
-            viewState
-        )
-        dispatch(setViewState({ latitude, longitude, zoom }))
+        const { alpha2Code } = option.data
+        dispatch(fitToBounds(alpha2Code))
     }
 
     const onSearchHandler = (value: string) => {

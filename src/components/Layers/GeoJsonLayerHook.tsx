@@ -3,11 +3,10 @@ import { GeoJsonLayer } from 'deck.gl'
 import { useAppSelector, useAppDispatch } from '../../store/hooks'
 import { Feature, FeatureCollection } from '../../interfaces'
 import { fitToBounds } from '../../store/map-slice'
-import { setCountryAlpha3Code } from '../../store/country-slice'
 
 const useGeoJsonLayer = (data: FeatureCollection): any => {
     const [layer, setLayer] = useState({})
-    const { alpha3Code } = useAppSelector((state) => state.country)
+    const { alpha2Code } = useAppSelector((state) => state.country)
     const dispatch = useAppDispatch()
 
     useEffect(() => {
@@ -21,20 +20,19 @@ const useGeoJsonLayer = (data: FeatureCollection): any => {
             highlightColor: [245, 198, 0, 10],
             getFillColor: [0, 0, 0, 0],
             getLineColor: (d: any) => {
-                return d.properties.ISO_A3 === alpha3Code
+                return d.properties.ISO2 === alpha2Code
                     ? [245, 198, 0, 255]
                     : [0, 0, 0, 0]
             },
             lineWidthMinPixels: 1,
             onClick: (info: any | { object: Feature }) => {
                 console.log('info: ', info)
-                dispatch(setCountryAlpha3Code(info.object.properties.ISO_A3))
-                dispatch(fitToBounds(info.object.properties.ISO_A3))
+                dispatch(fitToBounds(info.object.properties.ISO2))
             }
         })
 
         setLayer(lr)
-    }, [alpha3Code, data, dispatch])
+    }, [alpha2Code, data, dispatch])
 
     return { layer }
 }

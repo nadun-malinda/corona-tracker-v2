@@ -1,13 +1,31 @@
-interface Geometry {
-    coordintes?: any
+export interface CountryCodeByAlpha {
+    [x: string]: string
+}
+
+export interface BoundaryBoxData {
+    [x: string]: (string | number[])[]
+}
+
+export interface Geometry {
+    coordinates?: any
     type?: string
 }
 
 export interface Feature {
+    type: string
     geometry: Geometry
     properties: {
-        ISO_A3?: string
-        ADMIN?: string
+        NAME?: string
+        LAT?: number
+        LON?: number
+        ISO2?: string
+        ISO3?: string
+        FIPS?: string
+        UN?: number
+        AREA?: number
+        POP2005?: number
+        REGION?: number
+        SUBREGION?: number
     }
 }
 

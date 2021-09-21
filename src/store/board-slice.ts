@@ -1,7 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { AppThunk } from '.'
 import axios from 'axios'
-import { convertCountryA2ToA3 } from '../utils/utils'
 
 interface Coordinates {
     latitude: number
@@ -36,7 +35,7 @@ interface SelectedCountry {
         recovered: number
     }
     timeline: Timeline[]
-    alpha3Code: string
+    alpha3Code?: string
 }
 
 interface BoardState {
@@ -107,12 +106,12 @@ export const setLoading = (loading: boolean) => ({
     payload: loading
 })
 
-export const fetchCountryCovidData = (countryCode: string): AppThunk => {
+export const fetchCountryCovidData = (alpha2Code: string): AppThunk => {
     return async (dispatch, _getState) => {
         dispatch(setLoading(true))
         try {
             const response = await axios.get(
-                `https://corona-api.com/countries/${countryCode}`
+                `https://corona-api.com/countries/${alpha2Code}`
             )
             console.log('covid response; ', response)
             const {
@@ -121,8 +120,7 @@ export const fetchCountryCovidData = (countryCode: string): AppThunk => {
                 coordinates,
                 today,
                 latest_data,
-                timeline,
-                code
+                timeline
             } = response.data.data
             dispatch(
                 setSelectedCountry({
@@ -142,8 +140,8 @@ export const fetchCountryCovidData = (countryCode: string): AppThunk => {
                         deaths: latest_data.deaths,
                         recovered: latest_data.recovered
                     },
-                    timeline: timeline,
-                    alpha3Code: convertCountryA2ToA3(code)
+                    timeline: timeline
+                    // alpha3Code: convertCountryA2ToA3(code)
                 })
             )
             dispatch(setLoading(false))

@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import { useAppSelector, useAppDispatch } from '../../store/hooks'
 import { setViewState } from '../../store/map-slice'
 import DeckGL from '@deck.gl/react'
@@ -7,15 +7,19 @@ import { StaticMap } from 'react-map-gl'
 import useGeoJsonLayer from '../Layers/GeoJsonLayerHook'
 import { ViewState, FeatureCollection } from '../../interfaces'
 import { BOARD_WIDTH } from '../../consts'
-import dataFile from '../../data/countries.json'
+import countriesGeoJson from '../../data/countries-geojson.json'
 
-const boundaryData = dataFile as FeatureCollection
+const boundaryData = countriesGeoJson as FeatureCollection
 
 const Map = () => {
     const [layerData] = useState<FeatureCollection>(boundaryData)
     const { viewState } = useAppSelector((state) => state.map)
     const { layer } = useGeoJsonLayer(layerData)
     const dispatch = useAppDispatch()
+
+    useEffect(() => {
+        console.log('layerData: ', layerData)
+    }, [layerData])
 
     const onViewStateChangeHandler = useCallback(
         ({ viewState }: { viewState: ViewState }) => {
@@ -67,6 +71,7 @@ const Map = () => {
             >
                 <StaticMap
                     mapStyle={`mapbox://styles/nadun-malinda/cktn4hraw7jst18wbt6udj2yc`}
+                    // mapStyle={'mapbox://styles/mapbox/streets-v11'}
                     mapboxApiAccessToken={
                         process.env.REACT_APP_MAPBOX_API_TOKEN
                     }

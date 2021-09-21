@@ -1,12 +1,11 @@
 import { useState, useEffect } from 'react'
 import { Statistic } from 'antd'
 import { useAppDispatch } from '../../../store/hooks'
-import { fetchCovidCountries } from '../../../store/board-slice'
 import {
-    fetchAllCountries,
-    setCountryAlpha3Code
-} from '../../../store/country-slice'
-import { convertCountryA2ToA3 } from '../../../utils/utils'
+    fetchCountryCovidData,
+    fetchCovidCountries
+} from '../../../store/board-slice'
+import { fetchAllCountries } from '../../../store/country-slice'
 import classes from './CountryList.module.scss'
 import { fitToBounds } from '../../../store/map-slice'
 
@@ -59,9 +58,8 @@ const CountryList = () => {
     }, [dispatch])
 
     const onClickHandler = (alpha2Code: string) => {
-        const alpha3Code = convertCountryA2ToA3(alpha2Code)
-        dispatch(setCountryAlpha3Code(alpha3Code))
-        dispatch(fitToBounds(alpha3Code))
+        dispatch(fetchCountryCovidData(alpha2Code))
+        dispatch(fitToBounds(alpha2Code))
     }
 
     return (

@@ -55,10 +55,10 @@
             @include dot-bg();
             content: '';
             width: 100%;
-            height: 88%;
+            height: 100%;
             position: absolute;
-            left: -15px;
-            top: 18px;
+            left: -18px;
+            top: 13px;
             z-index: -1;
         }
     }

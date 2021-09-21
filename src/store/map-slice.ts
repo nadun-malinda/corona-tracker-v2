@@ -18,8 +18,7 @@ const initialState: MapState = {
         pitch: 0,
         width: 0,
         zoom: 1.5,
-        minZoom: 1.5,
-        transitionDuration: 1000
+        transitionDuration: 'auto'
     }
 }
 
@@ -48,11 +47,12 @@ export const setViewState = (viewState: ViewState) => ({
 export const fitToBounds = (alpha3Code: string): AppThunk => {
     return (dispatch, getState) => {
         const { viewState } = getState().map
-        const { longitude, latitude, zoom } = getFitBounds(
-            alpha3Code,
-            viewState
-        )
-        dispatch(setViewState({ latitude, longitude, zoom }))
+        const bounds = getFitBounds(alpha3Code, viewState)
+
+        if (bounds) {
+            const { longitude, latitude, zoom } = bounds
+            dispatch(setViewState({ latitude, longitude, zoom }))
+        }
     }
 }
 
