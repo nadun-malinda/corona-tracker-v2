@@ -1,11 +1,18 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { AppThunk } from '.'
 import axios from 'axios'
+import { fetchCovidCountries } from './board-slice'
+
+interface CountryName {
+    common: string
+    nativeName: any
+    official: string
+}
 
 export interface CountryData {
-    name: string
-    alpha2Code: string
-    alpha3Code: string
+    name: CountryName
+    cca2: string
+    cca3: string
     flag: string
     population: number
 }
@@ -14,77 +21,89 @@ interface CountrySearchResponse {
     data: CountryData[]
 }
 
-interface CountryState {
+interface Country {
     name: string
     flag: string
-    population: number
-    alpha2Code: string
-    alpha3Code: string
-    loading?: boolean
+    code: string
+    latest: any
+}
+
+interface CountryState {
+    countries: Country[]
+    country: Country
 }
 
 const initialState: CountryState = {
-    name: '',
-    flag: '',
-    population: 0,
-    alpha2Code: '',
-    alpha3Code: '',
-    loading: true
+    countries: [],
+    country: {
+        name: '',
+        flag: '',
+        code: '',
+        latest: null
+    }
 }
 
 const countrySlice = createSlice({
     name: 'country',
     initialState,
     reducers: {
-        setCountryData(state, action: PayloadAction<CountryState>) {
-            state.name = action.payload.name
-            state.flag = action.payload.flag
-            state.population = action.payload.population
-        },
-        setCountryAlpha2Code(state, action: PayloadAction<string>) {
-            state.alpha2Code = action.payload
-        },
-        setCountryAlpha3Code(state, action: PayloadAction<string>) {
-            state.alpha3Code = action.payload
-        },
-        setLoading(state, action: PayloadAction<boolean>) {
-            state.loading = action.payload
+        setCountries(state, action: PayloadAction<Country[]>) {
+            state.countries = action.payload
         }
     }
 })
 
-export const setCountryData = (countryData: CountryState) => ({
-    type: 'country/setCountryData',
-    payload: countryData
-})
-export const setCountryAlpha2Code = (alpha2Code: string) => ({
-    type: 'country/setCountryAlpha2Code',
-    payload: alpha2Code
-})
-export const setCountryAlpha3Code = (alpha3Code: string) => ({
-    type: 'country/setCountryAlpha3Code',
-    payload: alpha3Code
-})
-export const setLoading = (loading: boolean) => ({
-    type: 'country/setLoading',
-    payload: loading
+// action creators
+export const setCountries = (countries: Country[]) => ({
+    type: 'country/setCountries',
+    payload: countries
 })
 
 export const fetchCountryByName = (
     name: string
 ): AppThunk<Promise<CountrySearchResponse>> => {
-    return async (dispatch, getState) => {
-        return await axios.get(`https://restcountries.eu/rest/v2/name/${name}`)
+    return async () => {
+        return await axios.get(
+            `${process.env.REACT_APP_RESTCOUNTRIES_API}/name/${name}`
+        )
     }
 }
 
 export const fetchAllCountries = (): AppThunk<
     Promise<CountrySearchResponse>
 > => {
-    return async (_dispatch, _getState) => {
+    return async () => {
         return await axios.get(
-            `https://restcountries.eu/rest/v2/all?fields=flag;alpha2Code`
+            `${process.env.REACT_APP_RESTCOUNTRIES_API}/all?fields=flag,cca2`
         )
+    }
+}
+
+export const fetchAllCountriesAndCovidData = (): AppThunk => {
+    return async (dispatch) => {
+        try {
+            const countriesResponse = await dispatch(fetchAllCountries())
+            const covidResponse = await dispatch(fetchCovidCountries())
+            const countryFlags = countriesResponse.data
+            const countryCovid = covidResponse.data.data
+
+            const countries = countryCovid
+                .map((cc) => {
+                    const flag = countryFlags.find((cf) => cf.cca2 === cc.code)
+                    return {
+                        name: cc.name,
+                        code: cc.code,
+                        latest: cc.latest_data,
+                        flag: flag ? flag.flag : ''
+                    }
+                })
+                .filter((c) => c.latest.confirmed > 100000)
+                .sort((a, b) => b.latest.confirmed - a.latest.confirmed)
+
+            dispatch(setCountries(countries))
+        } catch (error) {
+            console.log('Error while loading country and covid data: ', error)
+        }
     }
 }
 

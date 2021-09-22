@@ -3,13 +3,13 @@ import { Statistic, Skeleton } from 'antd'
 import classes from './CountryDetails.module.scss'
 
 const CountryDetails = () => {
-    const { name, flag, population, loading } = useAppSelector(
-        (state) => state.country
-    )
+    // const { name, flag, population, loading } = useAppSelector(
+    //     (state) => state.country
+    // )
 
     return (
         <div className={classes.CountryDertails}>
-            {!loading && (
+            {/* {!loading && (
                 <>
                     <div className={classes.FlagWrap}>
                         <img
@@ -24,7 +24,7 @@ const CountryDetails = () => {
                     </div>
                 </>
             )}
-            <Skeleton className={classes.Skeleton} loading={loading} active />
+            <Skeleton className={classes.Skeleton} loading={loading} active /> */}
         </div>
     )
 }

@@ -1,1 +1,1 @@
-export const BOARD_WIDTH = 400
+export const BOARD_WIDTH = 375

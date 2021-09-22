@@ -53,7 +53,7 @@ export interface CovidCountry {
     updated_at: Date
 }
 
-interface CovidCountriesResponse {
+export interface CovidCountriesResponse {
     data: {
         data: CovidCountry[]
     }
@@ -156,7 +156,7 @@ export const fetchCovidCountries = (): AppThunk<
     Promise<CovidCountriesResponse>
 > => {
     return async (_dispatch, _useSttae) => {
-        return await axios.get(`https://corona-api.com/countries`)
+        return await axios.get(`${process.env.REACT_APP_CORONA_API}/countries`)
     }
 }
 

@@ -1,12 +1,11 @@
 import { useState, useEffect } from 'react'
 import { GeoJsonLayer } from 'deck.gl'
-import { useAppSelector, useAppDispatch } from '../../store/hooks'
+import { useAppDispatch } from '../../store/hooks'
 import { Feature, FeatureCollection } from '../../interfaces'
 import { fitToBounds } from '../../store/map-slice'
 
 const useGeoJsonLayer = (data: FeatureCollection): any => {
     const [layer, setLayer] = useState({})
-    const { alpha2Code } = useAppSelector((state) => state.country)
     const dispatch = useAppDispatch()
 
     useEffect(() => {
@@ -19,11 +18,7 @@ const useGeoJsonLayer = (data: FeatureCollection): any => {
             autoHighlight: true,
             highlightColor: [245, 198, 0, 10],
             getFillColor: [0, 0, 0, 0],
-            getLineColor: (d: any) => {
-                return d.properties.ISO2 === alpha2Code
-                    ? [245, 198, 0, 255]
-                    : [0, 0, 0, 0]
-            },
+            getLineColor: (d) => [0, 0, 0, 0],
             lineWidthMinPixels: 1,
             onClick: (info: any | { object: Feature }) => {
                 console.log('info: ', info)
@@ -32,7 +27,7 @@ const useGeoJsonLayer = (data: FeatureCollection): any => {
         })
 
         setLayer(lr)
-    }, [alpha2Code, data, dispatch])
+    }, [data, dispatch])
 
     return { layer }
 }

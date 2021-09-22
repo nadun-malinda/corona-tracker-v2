@@ -28,26 +28,25 @@ const CountrySearch = () => {
 
         dispatch(fetchCountryByName(debounceSearchText))
             .then((res) => {
-                console.log('country search: ', res)
                 setOptions(
                     res.data.map((country) => {
                         return {
-                            value: country.name,
+                            value: country.name.common,
                             data: country
                         }
                     })
                 )
             })
             .catch((err) => {
-                console.log('country search err: ', err)
+                console.log('Error while searching country: ', err)
             })
     }, [debounceSearchText, dispatch])
 
-    const onSelectHandler = (value: string, option: Option | any) => {
+    const onSelectHandler = (_: string, option: Option | any) => {
         console.log('on select: ', option)
 
-        const { alpha2Code } = option.data
-        dispatch(fitToBounds(alpha2Code))
+        const { cca2 } = option.data
+        dispatch(fitToBounds(cca2))
     }
 
     const onSearchHandler = (value: string) => {
