@@ -56,8 +56,8 @@ const CountrySearch = () => {
     return (
         <div className={classes.CountrySearch}>
             <AutoComplete
+                clearIcon={true}
                 className={classes.Search}
-                dropdownClassName={classes.Dropdown}
                 options={options}
                 size='large'
                 onSelect={onSelectHandler}

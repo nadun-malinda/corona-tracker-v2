@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react'
 import { GeoJsonLayer } from 'deck.gl'
-import { useAppDispatch } from '../../store/hooks'
-import { Feature, FeatureCollection } from '../../interfaces'
-import { fitToBounds } from '../../store/map-slice'
+import { useAppDispatch } from '../../../store/hooks'
+import { Feature, FeatureCollection } from '../../../interfaces'
+import { fitToBounds } from '../../../store/map-slice'
 
 const useGeoJsonLayer = (data: FeatureCollection): any => {
     const [layer, setLayer] = useState({})

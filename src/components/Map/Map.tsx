@@ -4,9 +4,10 @@ import { setViewState } from '../../store/map-slice'
 import DeckGL from '@deck.gl/react'
 import { FlyToInterpolator, MapView } from '@deck.gl/core'
 import { StaticMap } from 'react-map-gl'
-import useGeoJsonLayer from '../Layers/GeoJsonLayerHook'
+import useGeoJsonLayer from './layers/GeoJsonLayerHook'
 import { ViewState, FeatureCollection } from '../../interfaces'
 import { BOARD_WIDTH } from '../../consts'
+// import { json, csv } from 'd3-fetch'
 import countriesGeoJson from '../../data/countries-geojson.json'
 
 const boundaryData = countriesGeoJson as FeatureCollection
@@ -18,6 +19,9 @@ const Map = () => {
     const dispatch = useAppDispatch()
 
     useEffect(() => {
+        // csv('../../data/boundary-boxes.csv').then((res) => {
+        //     console.log('D3 CSV: ', res)
+        // })
         console.log('layerData: ', layerData)
     }, [layerData])
 

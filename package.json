@@ -18,6 +18,9 @@
     "@types/react-dom": "^17.0.9",
     "antd": "^4.16.13",
     "axios": "^0.21.4",
+    "d3-array": "^3.0.4",
+    "d3-fetch": "^3.0.1",
+    "d3-format": "^3.0.1",
     "deck.gl": "^8.5.7",
     "node-sass": "^6.0.1",
     "react": "^17.0.2",
@@ -54,6 +57,9 @@
     ]
   },
   "devDependencies": {
+    "@types/d3-array": "^3.0.1",
+    "@types/d3-fetch": "^3.0.1",
+    "@types/d3-format": "^3.0.1",
     "@types/react-vis": "^1.11.7"
   }
 }

@@ -1,3 +1,6 @@
+import { useState, useEffect } from 'react'
+import { useAppDispatch } from '../../../store/hooks'
+import { fetchGlobalTimeline } from '../../../store/covid-slice'
 import {
     XYPlot,
     XAxis,
@@ -13,14 +16,45 @@ interface ChartProp {
         x: number
         y: number
     }[]
-    tickFormat: (a: any) => string
+    tickFormat?: (a: any) => string
 }
 
-const AreaSeriesChart = ({ data, tickFormat }: ChartProp) => {
+const AreaSeriesChart = () => {
+    const [data, setData] = useState<any>([])
+    const dispatch = useAppDispatch()
+
+    useEffect(() => {
+        dispatch(fetchGlobalTimeline())
+            .then((res) => {
+                setData(
+                    res.data.data
+                        .map((timeline) => {
+                            const d = new Date(timeline.date)
+                            return {
+                                x: d.toLocaleString('en-us', {
+                                    day: '2-digit'
+                                }),
+                                y: timeline.confirmed
+                                // x0: timeline.date
+                            }
+                        })
+                        .reverse()
+                )
+            })
+            .catch((err) => console.log('err: ', err))
+    }, [dispatch])
+
     return (
-        <XYPlot height={150} width={350}>
-            <VerticalGridLines style={{ strokeOpacity: 0.1 }} />
-            <HorizontalGridLines style={{ strokeOpacity: 0.1 }} />
+        <XYPlot
+            height={180}
+            width={340}
+            xType='ordinal'
+            margin={{
+                left: 55
+            }}
+        >
+            {/* <VerticalGridLines style={{ strokeOpacity: 0.1 }} />
+            <HorizontalGridLines style={{ strokeOpacity: 0.1 }} /> */}
             <LineSeries
                 animation='noWobble'
                 data={data}
@@ -32,21 +66,16 @@ const AreaSeriesChart = ({ data, tickFormat }: ChartProp) => {
             <AreaSeries
                 animation='noWobble'
                 data={data}
-                style={{
-                    strokeWidth: '2px'
-                }}
+                // style={{
+                //     strokeWidth: '2px'
+                // }}
                 opacity={0.4}
                 stroke='transparent'
                 fill='#862fcf'
                 curve={'curveBasis'}
             />
-            <XAxis tickFormat={tickFormat} tickLabelAngle={-20} />
-            <YAxis
-                width={50}
-                hideLine
-                tickTotal={5}
-                style={{ paddingLeft: 100, color: '#bdc1c6' }}
-            />
+            <XAxis tickLabelAngle={-20} />
+            <YAxis />
         </XYPlot>
     )
 }

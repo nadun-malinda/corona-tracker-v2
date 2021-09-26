@@ -66,3 +66,15 @@ export interface ViewState {
     transitionDuration?: 'auto' | number
     transitionInterpolator?: any
 }
+
+export interface TimelineData {
+    active: number
+    confirmed: number
+    date: Date
+    deaths: number
+    new_confirmed: number
+    new_deaths: number
+    new_recovered: number
+    recovered: number
+    updated_at: Date
+}

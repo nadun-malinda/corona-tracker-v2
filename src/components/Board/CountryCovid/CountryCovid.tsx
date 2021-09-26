@@ -24,7 +24,8 @@ const CountryCovid = () => {
                 weekday: 'short'
             })
         }
-        return <AreaSeriesChart data={data} tickFormat={tickFormat} />
+        return <></>
+        // return <AreaSeriesChart data={data} tickFormat={tickFormat} />
     }
 
     const getlastWeekDeathChart = () => {
@@ -42,7 +43,8 @@ const CountryCovid = () => {
                 weekday: 'short'
             })
         }
-        return <AreaSeriesChart data={data} tickFormat={tickFormat} />
+        return <></>
+        // return <AreaSeriesChart data={data} tickFormat={tickFormat} />
     }
 
     return (

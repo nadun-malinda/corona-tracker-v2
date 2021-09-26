@@ -1,0 +1,29 @@
+@import './variables';
+
+.ant-select-selector {
+    color: $grey-white;
+    border-radius: 0 !important;
+    border: 1px solid;
+    border-color: $yellow !important;
+    background-color: $deep-blue !important;
+}
+
+.ant-select-arrow {
+    color: $white;
+}
+
+.ant-select-dropdown {
+    background-color: $deep-blue;
+
+    .ant-select-item {
+        color: $white;
+    }
+}
+
+.ant-select-item-option-selected:not(.ant-select-item-option-disabled) {
+    background-color: transparent;
+}
+
+.ant-select-item-option-active:not(.ant-select-item-option-disabled) {
+    background-color: $grey-black;
+}

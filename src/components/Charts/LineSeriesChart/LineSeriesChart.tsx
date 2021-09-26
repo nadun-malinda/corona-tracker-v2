@@ -11,36 +11,57 @@ import {
     HorizontalGridLines,
     Borders
 } from 'react-vis'
-import { useAppSelector } from '../../../store/hooks'
+import { fetchGlobalTimeline } from '../../../store/covid-slice'
+import { useAppDispatch, useAppSelector } from '../../../store/hooks'
 
 const LineSeriesChart = () => {
     const [chartData, setChartData] = useState<any>([])
     const { selectedCountry } = useAppSelector((state) => state.board)
+    const dispatch = useAppDispatch()
 
     useEffect(() => {
-        const weekTimeline = selectedCountry.timeline?.slice(0, 7)
-        console.log('week: ', weekTimeline)
-        setChartData(
-            weekTimeline?.map((timeline, index) => {
-                return {
-                    x: index,
-                    y: timeline.new_deaths,
-                    x0: timeline.date
-                }
+        dispatch(fetchGlobalTimeline())
+            .then((res) => {
+                console.log('timeline: ', res)
+                setChartData(
+                    res.data.data.map((timeline, index) => {
+                        return {
+                            x: index,
+                            y: timeline.new_deaths
+                            // x0: timeline.date
+                        }
+                    })
+                )
             })
-        )
-    }, [selectedCountry.timeline])
+            .catch((err) => {
+                console.log('err: ', err)
+            })
+    }, [dispatch])
+
+    // useEffect(() => {
+    //     const weekTimeline = selectedCountry.timeline?.slice(0, 7)
+    //     console.log('week: ', weekTimeline)
+    //     setChartData(
+    //         weekTimeline?.map((timeline, index) => {
+    //             return {
+    //                 x: index,
+    //                 y: timeline.new_deaths,
+    //                 x0: timeline.date
+    //             }
+    //         })
+    //     )
+    // }, [selectedCountry.timeline])
 
     return (
-        <XYPlot height={150} width={280}>
+        <XYPlot height={150} width={280} xType='ordinal'>
             <GradientDefs>
                 <linearGradient id='CoolGradient' x1='0' x2='0' y1='0' y2='1'>
                     <stop offset='0%' stopColor='red' stopOpacity={0.4} />
                     <stop offset='100%' stopColor='blue' stopOpacity={0.3} />
                 </linearGradient>
             </GradientDefs>
-            <VerticalGridLines />
-            <HorizontalGridLines />
+            {/* <VerticalGridLines />
+            <HorizontalGridLines /> */}
             {/* <VerticalBarSeries barWidth={1} data={data} /> */}
             <LineSeries
                 data={chartData}
@@ -49,7 +70,7 @@ const LineSeriesChart = () => {
                 strokeStyle='solid'
                 curve={'curveBasis'}
             />
-            <AreaSeries
+            {/* <AreaSeries
                 data={chartData}
                 style={{
                     strokeWidth: '2px'
@@ -59,7 +80,7 @@ const LineSeriesChart = () => {
                 opacity={0.25}
                 stroke='transparent'
                 curve={'curveBasis'}
-            />
+            /> */}
             {/* <Borders
                 style={{
                     bottom: { fill: '#fff' },
@@ -69,12 +90,14 @@ const LineSeriesChart = () => {
                 }}
             /> */}
             <XAxis
-                tickFormat={(d) => {
-                    const arr = selectedCountry.timeline.slice(0, 7).reverse()
-                    return new Date(arr[d].date).toLocaleDateString('en-US', {
-                        weekday: 'short'
-                    })
-                }}
+                // tickFormat={(d) => {
+                //     console.log('d: ', d)
+                //     return d
+                //     // const arr = selectedCountry.timeline.slice(0, 7).reverse()
+                //     // return new Date(arr[d].date).toLocaleDateString('en-US', {
+                //     //     weekday: 'short'
+                //     // })
+                // }}
                 tickLabelAngle={-20}
             />
             <YAxis />

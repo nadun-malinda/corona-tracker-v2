@@ -2,12 +2,14 @@ import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit'
 import mapSlice from './map-slice'
 import boardSlice from './board-slice'
 import countrySlice from './country-slice'
+import covidSlice from './covid-slice'
 
 const store = configureStore({
     reducer: {
         map: mapSlice.reducer,
         board: boardSlice.reducer,
-        country: countrySlice.reducer
+        country: countrySlice.reducer,
+        covid: covidSlice.reducer
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({
