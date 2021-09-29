@@ -1,7 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { AppThunk } from '.'
 import axios from 'axios'
-import { fetchCovidCountries } from './board-slice'
+import { fetchCovidCountries } from './covid-slice'
+import { Country } from '../interfaces'
 
 interface CountryName {
     common: string
@@ -21,13 +22,6 @@ interface CountrySearchResponse {
     data: CountryData[]
 }
 
-interface Country {
-    name: string
-    flag: string
-    code: string
-    latest: any
-}
-
 interface CountryState {
     countries: Country[]
     country: Country
@@ -38,8 +32,10 @@ const initialState: CountryState = {
     country: {
         name: '',
         flag: '',
-        code: '',
-        latest: null
+        latest: null,
+        cca2: '',
+        cca3: '',
+        population: 0
     }
 }
 
@@ -92,7 +88,7 @@ export const fetchAllCountriesAndCovidData = (): AppThunk => {
                     const flag = countryFlags.find((cf) => cf.cca2 === cc.code)
                     return {
                         name: cc.name,
-                        code: cc.code,
+                        cca2: cc.code,
                         latest: cc.latest_data,
                         flag: flag ? flag.flag : ''
                     }

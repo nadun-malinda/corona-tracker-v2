@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useAppDispatch } from '../../store/hooks'
 import { fitToBounds } from '../../store/map-slice'
+import { fetchCountryCovid } from '../../store/covid-slice'
 import { AutoComplete } from 'antd'
 import useDebounce from '../../utils/deBounce'
 import classes from './CountrySearch.module.scss'
@@ -46,6 +47,7 @@ const CountrySearch = () => {
         console.log('on select: ', option)
 
         const { cca2 } = option.data
+        dispatch(fetchCountryCovid(cca2))
         dispatch(fitToBounds(cca2))
     }
 

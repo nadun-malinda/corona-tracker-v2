@@ -1,0 +1,34 @@
+@import '../../../styles/variables';
+
+.Crosshair {
+    display: flex;
+    flex-direction: column;
+    padding: 6px 10px;
+    width: 100%;
+    background-color: $deep-blue;
+    white-space: nowrap;
+
+    .Item:not(:last-of-type) {
+        margin-bottom: 2px;
+    }
+
+    .Calendar,
+    .Cases,
+    .Deaths,
+    .Recovered {
+        margin-right: 5px;
+    }
+
+    .Calendar {
+        color: $glow-blue;
+    }
+    .Cases {
+        color: $glow-yellow;
+    }
+    .Deaths {
+        color: $glow-red;
+    }
+    .Recovered {
+        color: $glow-green;
+    }
+}

@@ -1,3 +1,23 @@
+export type Board = 'world' | 'country'
+
+export interface Country {
+    name: string
+    flag?: string
+    latest: any
+    cca2: string
+    cca3?: string
+    population?: number
+    timeline?: any
+}
+
+export interface CovidCountriesResponseData {
+    name: string
+    code: string
+    latest_data: any
+    population: number
+    timeline: any
+}
+
 export interface CountryCodeByAlpha {
     [x: string]: string
 }
@@ -77,4 +97,9 @@ export interface TimelineData {
     new_recovered: number
     recovered: number
     updated_at: Date
+}
+
+export interface CrosshairValues {
+    x: string
+    y: number
 }

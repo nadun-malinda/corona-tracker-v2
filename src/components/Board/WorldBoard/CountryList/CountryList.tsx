@@ -1,10 +1,11 @@
 import { useEffect } from 'react'
 import { Statistic } from 'antd'
-import { useAppSelector, useAppDispatch } from '../../../store/hooks'
-import { fetchCountryCovidData } from '../../../store/board-slice'
-import { fetchAllCountriesAndCovidData } from '../../../store/country-slice'
+import { useAppSelector, useAppDispatch } from '../../../../store/hooks'
+import { fetchAllCountriesAndCovidData } from '../../../../store/country-slice'
+import { fetchCountryCovid } from '../../../../store/covid-slice'
 import classes from './CountryList.module.scss'
-import { fitToBounds } from '../../../store/map-slice'
+import { fitToBounds } from '../../../../store/map-slice'
+import { Country } from '../../../../interfaces'
 
 const CountryList = () => {
     const { countries } = useAppSelector((state) => state.country)
@@ -14,18 +15,19 @@ const CountryList = () => {
         dispatch(fetchAllCountriesAndCovidData())
     }, [dispatch])
 
-    const onClickHandler = (code: string) => {
-        dispatch(fetchCountryCovidData(code))
-        dispatch(fitToBounds(code))
+    const onClickHandler = ({ cca2, flag, latest }: Country) => {
+        console.log('latest: ', latest)
+        dispatch(fetchCountryCovid(cca2))
+        dispatch(fitToBounds(cca2))
     }
 
     return (
         <ul className={classes.List}>
             {countries.map((country) => (
                 <li
-                    key={country.code}
+                    key={country.cca2}
                     className={classes.ListItem}
-                    onClick={() => onClickHandler(country.code)}
+                    onClick={() => onClickHandler(country)}
                 >
                     <p className={classes.Name}>
                         <span className={classes.Flag}>{country.flag}</span>
