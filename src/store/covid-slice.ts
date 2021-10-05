@@ -41,6 +41,7 @@ const covidSlice = createSlice({
     reducers: {
         setCovidCountry(state, action: PayloadAction<Country>) {
             state.name = action.payload.name
+            state.flag = action.payload.flag
             state.cca2 = action.payload.cca2
             state.cca3 = action.payload.cca3
             state.population = action.payload.population
@@ -84,13 +85,17 @@ export const fetchCountryCovid = (cca2: string): AppThunk => {
                 response.data.data
 
             console.log('response: ', response)
+            const { countries } = getState().country
+            const [country] = countries.filter((c) => c.cca2 === cca2)
+            console.log('flag: ', country)
             dispatch(
                 setCovidCountry({
                     name,
                     cca2: code,
                     population,
                     latest: latest_data,
-                    timeline
+                    timeline,
+                    flag: country.flag
                 })
             )
         } catch (error) {

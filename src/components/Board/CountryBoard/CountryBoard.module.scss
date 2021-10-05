@@ -1,0 +1,91 @@
+@import '../../../styles/mixins';
+@import '../../../styles/variables';
+
+.Back {
+    color: $white;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-block;
+
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
+.General {
+    @include border();
+    @include ant-stat;
+    background-color: $deep-blue;
+    position: relative;
+    padding: 20px;
+    margin-bottom: 30px;
+
+    &::before {
+        @include dot-bg();
+        content: '';
+        width: 102%;
+        height: 100%;
+        position: absolute;
+        left: -17px;
+        top: 14px;
+        z-index: -1;
+    }
+
+    .CountryName {
+        font-weight: bold;
+        color: $white;
+        display: flex;
+        align-items: center;
+    }
+    .Flag {
+        font-size: 20px;
+        margin-right: 8px;
+    }
+}
+
+.Covid {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
+    .ListItem {
+        @include border(1px);
+        @include ant-stat;
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+        position: relative;
+        background-color: $deep-blue;
+        padding: 8px 14px;
+        color: $white;
+
+        :global(.ant-statistic):first-of-type {
+            margin-left: 20px;
+        }
+
+        &::before {
+            @include dot-bg();
+            content: '';
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            left: -13px;
+            top: 13px;
+            z-index: -1;
+        }
+
+        .Icon {
+            font-size: 1.35rem;
+
+            &.Deaths {
+                color: $glow-red;
+            }
+            &.Confirmed {
+                color: $glow-yellow;
+            }
+            &.Recovered {
+                color: $glow-green;
+            }
+        }
+    }
+}

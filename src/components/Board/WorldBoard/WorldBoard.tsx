@@ -5,7 +5,9 @@ import classes from './WorldBoard.module.scss'
 const WorldPanel = () => {
     return (
         <>
-            <WorldChart />
+            <div className={classes.Chart}>
+                <WorldChart />
+            </div>
             <div className={classes.List}>
                 <CountryList />
             </div>

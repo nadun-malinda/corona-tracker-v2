@@ -1,9 +1,15 @@
 export type Board = 'world' | 'country'
 
+interface Latest {
+    deaths: number
+    confirmed: number
+    recovered: number
+    critical: number
+}
 export interface Country {
     name: string
     flag?: string
-    latest: any
+    latest: Latest | null
     cca2: string
     cca3?: string
     population?: number

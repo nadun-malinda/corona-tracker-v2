@@ -1,10 +1,12 @@
+@import './mixins';
 @import './variables';
 
 .ant-select-selector {
+    @include border();
     color: $grey-white;
     border-radius: 0 !important;
-    border: 1px solid;
-    border-color: $yellow !important;
+    // border: 1px solid;
+    // border-color: $yellow !important;
     background-color: $deep-blue !important;
 }
 

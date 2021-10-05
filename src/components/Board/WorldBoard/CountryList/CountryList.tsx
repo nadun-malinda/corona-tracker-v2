@@ -1,10 +1,12 @@
 import { useEffect } from 'react'
+import { batch } from 'react-redux'
 import { Statistic } from 'antd'
 import { useAppSelector, useAppDispatch } from '../../../../store/hooks'
 import { fetchAllCountriesAndCovidData } from '../../../../store/country-slice'
-import { fetchCountryCovid } from '../../../../store/covid-slice'
-import classes from './CountryList.module.scss'
 import { fitToBounds } from '../../../../store/map-slice'
+import { fetchCountryCovid } from '../../../../store/covid-slice'
+import { setBoard } from '../../../../store/board-slice'
+import classes from './CountryList.module.scss'
 import { Country } from '../../../../interfaces'
 
 const CountryList = () => {
@@ -17,8 +19,11 @@ const CountryList = () => {
 
     const onClickHandler = ({ cca2, flag, latest }: Country) => {
         console.log('latest: ', latest)
-        dispatch(fetchCountryCovid(cca2))
-        dispatch(fitToBounds(cca2))
+        batch(() => {
+            dispatch(fetchCountryCovid(cca2))
+            dispatch(fitToBounds(cca2))
+            dispatch(setBoard('country'))
+        })
     }
 
     return (
@@ -36,11 +41,11 @@ const CountryList = () => {
                     <div className={classes.Stats}>
                         <Statistic
                             title='Total cases'
-                            value={country.latest.confirmed}
+                            value={country.latest?.confirmed}
                         />
                         <Statistic
                             title='Total deaths'
-                            value={country.latest.deaths}
+                            value={country.latest?.deaths}
                         />
                     </div>
                 </li>

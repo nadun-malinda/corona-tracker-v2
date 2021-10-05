@@ -1,3 +1,5 @@
+@import './variables';
+
 @mixin dot-bg {
     background: linear-gradient(90deg, #161122 5px, transparent 0%) center,
         linear-gradient(#161122 5px, transparent 1%) center, #a799cc;
@@ -24,4 +26,20 @@
             center,
         $dot-color;
     background-size: $dot-space $dot-space;
+}
+
+@mixin border($width: 1px, $pattern: solid, $color: $yellow) {
+    border: $width $pattern $color !important;
+}
+
+@mixin ant-stat {
+    :global(.ant-statistic-title) {
+        color: #fff;
+        font-size: 10px;
+        margin-bottom: 0px;
+    }
+    :global(.ant-statistic-content) {
+        color: #fff;
+        font-size: 14px;
+    }
 }

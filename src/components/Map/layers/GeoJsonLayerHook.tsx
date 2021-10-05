@@ -1,8 +1,11 @@
 import { useState, useEffect } from 'react'
-import { GeoJsonLayer } from 'deck.gl'
+import { batch } from 'react-redux'
+import { GeoJsonLayer } from '@deck.gl/layers'
 import { useAppDispatch } from '../../../store/hooks'
 import { Feature, FeatureCollection } from '../../../interfaces'
 import { fitToBounds } from '../../../store/map-slice'
+import { fetchCountryCovid } from '../../../store/covid-slice'
+import { setBoard } from '../../../store/board-slice'
 
 const useGeoJsonLayer = (data: FeatureCollection): any => {
     const [layer, setLayer] = useState({})
@@ -21,8 +24,11 @@ const useGeoJsonLayer = (data: FeatureCollection): any => {
             getLineColor: (d) => [0, 0, 0, 0],
             lineWidthMinPixels: 1,
             onClick: (info: any | { object: Feature }) => {
-                console.log('info: ', info)
-                dispatch(fitToBounds(info.object.properties.ISO2))
+                batch(() => {
+                    dispatch(fetchCountryCovid(info.object.properties.ISO2))
+                    dispatch(fitToBounds(info.object.properties.ISO2))
+                    dispatch(setBoard('country'))
+                })
             }
         })
 

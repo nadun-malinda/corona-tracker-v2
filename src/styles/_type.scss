@@ -1,4 +1,6 @@
+@import './variables';
+
 .small-heading {
     text-transform: uppercase;
-    color: #555;
+    color: $grey;
 }
