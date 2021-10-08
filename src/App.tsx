@@ -8,9 +8,9 @@ import './styles/styles.scss'
 const App = () => {
     return (
         <>
+            <Map />
             <CountrySearch />
             <Board />
-            <Map />
         </>
     )
 }

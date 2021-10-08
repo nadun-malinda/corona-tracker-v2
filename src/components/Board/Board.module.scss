@@ -7,9 +7,103 @@
     height: calc(100vh);
     overflow: auto;
     background-color: #202124;
-    padding: 20px;
+    padding: 10px 20px;
+
+    &.SlideLeft {
+        overflow: visible;
+        .Toggler {
+            .IconWrap {
+                right: -100px;
+            }
+        }
+    }
 
     .Hide {
         display: none;
     }
+
+    .Toggler {
+        display: flex;
+        justify-content: end;
+        align-items: center;
+        height: 35px;
+        position: relative;
+        margin-bottom: 10px;
+        .IconWrap {
+            position: absolute;
+            right: 0;
+            width: 35px;
+            height: 35px;
+            border-radius: 35px;
+            background-color: $deep-blue;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+
+            .Icon {
+                color: $white;
+            }
+        }
+    }
 }
+
+.SlideRight {
+    -webkit-animation: slide-right 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)
+        both;
+    animation: slide-right 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+}
+
+@-webkit-keyframes slide-right {
+    0% {
+        -webkit-transform: translateX(-375px);
+        transform: translateX(-375px);
+    }
+    100% {
+        -webkit-transform: translateX(0);
+        transform: translateX(0);
+    }
+}
+@keyframes slide-right {
+    0% {
+        -webkit-transform: translateX(-375px);
+        transform: translateX(-375px);
+    }
+    100% {
+        -webkit-transform: translateX(0);
+        transform: translateX(0);
+    }
+}
+
+.SlideLeft {
+    -webkit-animation: slide-left 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+    animation: slide-left 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+}
+
+@-webkit-keyframes slide-left {
+    0% {
+        -webkit-transform: translateX(0);
+        transform: translateX(0);
+    }
+    100% {
+        -webkit-transform: translateX(-375px);
+        transform: translateX(-375px);
+    }
+}
+@keyframes slide-left {
+    0% {
+        -webkit-transform: translateX(0);
+        transform: translateX(0);
+    }
+    100% {
+        -webkit-transform: translateX(-375px);
+        transform: translateX(-375px);
+    }
+}
+
+// @media (max-width: 1000px) {
+//     .Board {
+//         width: 100%;
+//         position: relative;
+//     }
+// }

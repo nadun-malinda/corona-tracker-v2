@@ -15,6 +15,7 @@
 .General {
     @include border();
     @include ant-stat;
+    min-height: 124px;
     background-color: $deep-blue;
     position: relative;
     padding: 20px;
@@ -51,6 +52,7 @@
     .ListItem {
         @include border(1px);
         @include ant-stat;
+        min-height: 56px;
         display: flex;
         align-items: center;
         margin-bottom: 20px;

@@ -14,6 +14,7 @@ export interface Country {
     cca3?: string
     population?: number
     timeline?: any
+    feature?: Feature | []
 }
 
 export interface CovidCountriesResponseData {

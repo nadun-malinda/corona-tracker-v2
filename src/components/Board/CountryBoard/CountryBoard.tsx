@@ -7,12 +7,12 @@ import {
 } from '@ant-design/icons'
 import { useAppSelector, useAppDispatch } from '../../../store/hooks'
 import { setBoard } from '../../../store/board-slice'
+import GeneralSkeleton from './GeneralSkeleton/GeneralSkeleton'
+import CovidListSkeleton from './CovidListSkeleton/CovidListSkeleton'
 import classes from './CountryBoard.module.scss'
 
 const CountryBoard = () => {
-    const { name, population, flag, latest } = useAppSelector(
-        (state) => state.covid
-    )
+    const { country, loading } = useAppSelector((state) => state.covid)
     const dispatch = useAppDispatch()
 
     const backHandler = () => {
@@ -26,37 +26,83 @@ const CountryBoard = () => {
                 Back
             </p>
             <div className={classes.General}>
-                <h3 className={classes.CountryName}>
-                    <span className={classes.Flag}>{flag}</span>
-                    {name}
-                </h3>
-                <Statistic title='Population' value={population} />
+                {loading ? (
+                    <GeneralSkeleton />
+                ) : (
+                    <>
+                        <h3 className={classes.CountryName}>
+                            <span className={classes.Flag}>{country.flag}</span>
+                            {country.name}
+                        </h3>
+
+                        <Statistic
+                            title='Population'
+                            value={country.population}
+                        />
+                    </>
+                )}
             </div>
 
             <ul className={classes.Covid}>
                 <li className={classes.ListItem}>
-                    <FrownOutlined
-                        className={`${classes.Icon} ${classes.Deaths}`}
-                    />
-                    <Statistic title='Deaths' value={latest?.deaths} />
+                    {loading ? (
+                        <CovidListSkeleton />
+                    ) : (
+                        <>
+                            <FrownOutlined
+                                className={`${classes.Icon} ${classes.Deaths}`}
+                            />
+                            <Statistic
+                                title='Deaths'
+                                value={country.latest?.deaths}
+                            />
+                        </>
+                    )}
                 </li>
                 <li className={classes.ListItem}>
-                    <MedicineBoxOutlined
-                        className={`${classes.Icon} ${classes.Confirmed}`}
-                    />
-                    <Statistic title='Confirmed' value={latest?.confirmed} />
+                    {loading ? (
+                        <CovidListSkeleton />
+                    ) : (
+                        <>
+                            <MedicineBoxOutlined
+                                className={`${classes.Icon} ${classes.Confirmed}`}
+                            />
+                            <Statistic
+                                title='Confirmed'
+                                value={country.latest?.confirmed}
+                            />
+                        </>
+                    )}
                 </li>
                 <li className={classes.ListItem}>
-                    <MedicineBoxOutlined
-                        className={`${classes.Icon} ${classes.Critical}`}
-                    />
-                    <Statistic title='Critical' value={latest?.critical} />
+                    {loading ? (
+                        <CovidListSkeleton />
+                    ) : (
+                        <>
+                            <MedicineBoxOutlined
+                                className={`${classes.Icon} ${classes.Critical}`}
+                            />
+                            <Statistic
+                                title='Critical'
+                                value={country.latest?.critical}
+                            />
+                        </>
+                    )}
                 </li>
                 <li className={classes.ListItem}>
-                    <SmileOutlined
-                        className={`${classes.Icon} ${classes.Recovered}`}
-                    />
-                    <Statistic title='Recovered' value={latest?.recovered} />
+                    {loading ? (
+                        <CovidListSkeleton />
+                    ) : (
+                        <>
+                            <SmileOutlined
+                                className={`${classes.Icon} ${classes.Recovered}`}
+                            />
+                            <Statistic
+                                title='Recovered'
+                                value={country.latest?.recovered}
+                            />
+                        </>
+                    )}
                 </li>
             </ul>
         </div>

@@ -7,14 +7,14 @@ import { fitToBounds } from '../../../store/map-slice'
 import { fetchCountryCovid } from '../../../store/covid-slice'
 import { setBoard } from '../../../store/board-slice'
 
-const useGeoJsonLayer = (data: FeatureCollection): any => {
-    const [layer, setLayer] = useState({})
+const useCountryLayer = (data: FeatureCollection): any => {
+    const [countryLayer, setCountryLayer] = useState({})
     const dispatch = useAppDispatch()
 
     useEffect(() => {
         const lr = new GeoJsonLayer({
             id: 'countries',
-            data: data,
+            data,
             stroked: true,
             filled: true,
             pickable: true,
@@ -24,6 +24,7 @@ const useGeoJsonLayer = (data: FeatureCollection): any => {
             getLineColor: (d) => [0, 0, 0, 0],
             lineWidthMinPixels: 1,
             onClick: (info: any | { object: Feature }) => {
+                console.log('click :', info)
                 batch(() => {
                     dispatch(fetchCountryCovid(info.object.properties.ISO2))
                     dispatch(fitToBounds(info.object.properties.ISO2))
@@ -32,10 +33,10 @@ const useGeoJsonLayer = (data: FeatureCollection): any => {
             }
         })
 
-        setLayer(lr)
+        setCountryLayer(lr)
     }, [data, dispatch])
 
-    return { layer }
+    return { countryLayer }
 }
 
-export default useGeoJsonLayer
+export default useCountryLayer

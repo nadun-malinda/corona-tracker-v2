@@ -4,26 +4,36 @@ import { setViewState } from '../../store/map-slice'
 import DeckGL from '@deck.gl/react'
 import { FlyToInterpolator, MapView } from '@deck.gl/core'
 import { StaticMap } from 'react-map-gl'
-import useGeoJsonLayer from './layers/GeoJsonLayerHook'
-import { ViewState, FeatureCollection } from '../../interfaces'
+import useCountryLayer from './layers/CountryLayerHook'
+import useBorderLayer from './layers/BorderLayerHook'
+import { ViewState, FeatureCollection, Feature } from '../../interfaces'
 import { BOARD_WIDTH } from '../../consts'
 // import { json, csv } from 'd3-fetch'
 import countriesGeoJson from '../../data/countries-geojson.json'
+import classes from './Map.module.scss'
 
 const boundaryData = countriesGeoJson as FeatureCollection
+const initialBorderFetaure: Feature = {
+    type: 'Feature',
+    properties: {},
+    geometry: {}
+}
 
 const Map = () => {
     const [layerData] = useState<FeatureCollection>(boundaryData)
-    const { viewState } = useAppSelector((state) => state.map)
-    const { layer } = useGeoJsonLayer(layerData)
+    const [borderLayerData, setBorderLayerData] = useState<Feature | []>(
+        initialBorderFetaure
+    )
+    const { viewState, mapWidth } = useAppSelector((state) => state.map)
+    const { country } = useAppSelector((state) => state.country)
+    const { open } = useAppSelector((state) => state.board)
+    const { countryLayer } = useCountryLayer(layerData)
+    const { borderLayer } = useBorderLayer(borderLayerData)
     const dispatch = useAppDispatch()
 
     useEffect(() => {
-        // csv('../../data/boundary-boxes.csv').then((res) => {
-        //     console.log('D3 CSV: ', res)
-        // })
-        console.log('layerData: ', layerData)
-    }, [layerData])
+        country.feature && setBorderLayerData(country.feature)
+    }, [country])
 
     const onViewStateChangeHandler = useCallback(
         ({ viewState }: { viewState: ViewState }) => {
@@ -45,7 +55,7 @@ const Map = () => {
     )
 
     return (
-        <div>
+        <div className={classes.Map}>
             <DeckGL
                 viewState={{
                     ...viewState,
@@ -54,8 +64,8 @@ const Map = () => {
                 views={[
                     new MapView({
                         id: 'map',
-                        x: BOARD_WIDTH,
-                        width: window.innerWidth - BOARD_WIDTH,
+                        x: open ? BOARD_WIDTH : 0,
+                        width: mapWidth,
                         controller: true
                     })
                 ]}
@@ -71,11 +81,10 @@ const Map = () => {
                         return 'grab'
                     }
                 }}
-                layers={[layer]}
+                layers={[countryLayer, borderLayer]}
             >
                 <StaticMap
                     mapStyle={`mapbox://styles/nadun-malinda/cktn4hraw7jst18wbt6udj2yc`}
-                    // mapStyle={'mapbox://styles/mapbox/streets-v11'}
                     mapboxApiAccessToken={
                         process.env.REACT_APP_MAPBOX_API_TOKEN
                     }

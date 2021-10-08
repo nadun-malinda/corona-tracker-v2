@@ -25,14 +25,22 @@ interface CovidCountriesResponse {
     }
 }
 
-const initialState: Country = {
-    name: '',
-    flag: '',
-    cca2: '',
-    cca3: '',
-    population: 0,
-    latest: null,
-    timeline: null
+interface CovidState {
+    country: Country
+    loading: boolean
+}
+
+const initialState: CovidState = {
+    country: {
+        name: '',
+        flag: '',
+        cca2: '',
+        cca3: '',
+        population: 0,
+        latest: null,
+        timeline: null
+    },
+    loading: false
 }
 
 const covidSlice = createSlice({
@@ -40,13 +48,10 @@ const covidSlice = createSlice({
     initialState,
     reducers: {
         setCovidCountry(state, action: PayloadAction<Country>) {
-            state.name = action.payload.name
-            state.flag = action.payload.flag
-            state.cca2 = action.payload.cca2
-            state.cca3 = action.payload.cca3
-            state.population = action.payload.population
-            state.latest = action.payload.latest
-            state.timeline = action.payload.timeline
+            state.country = action.payload
+        },
+        setLoading(state, action: PayloadAction<boolean>) {
+            state.loading = action.payload
         }
     }
 })
@@ -55,6 +60,10 @@ const covidSlice = createSlice({
 export const setCovidCountry = (covidCountry: Country) => ({
     type: 'covid/setCovidCountry',
     payload: covidCountry
+})
+export const setLoading = (loading: boolean) => ({
+    type: 'covid/setLoading',
+    payload: loading
 })
 
 // thunks
@@ -77,6 +86,8 @@ export const fetchCovidCountries = (): AppThunk<
 export const fetchCountryCovid = (cca2: string): AppThunk => {
     return async (dispatch, getState) => {
         try {
+            dispatch(setLoading(true))
+
             const response: CovidCountryResponse = await axios.get(
                 `${process.env.REACT_APP_CORONA_API}/countries/${cca2}`
             )
@@ -98,8 +109,11 @@ export const fetchCountryCovid = (cca2: string): AppThunk => {
                     flag: country.flag
                 })
             )
+
+            dispatch(setLoading(false))
         } catch (error) {
             console.log('Error while loading country covid data: ', error)
+            dispatch(setLoading(false))
         }
     }
 }

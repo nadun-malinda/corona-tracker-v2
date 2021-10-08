@@ -1,8 +1,25 @@
 import { WebMercatorViewport } from '@deck.gl/core'
-import { ViewState, BoundaryBoxData } from '../interfaces'
+import {
+    ViewState,
+    BoundaryBoxData,
+    FeatureCollection,
+    Feature
+} from '../interfaces'
 import bbDataFile from '../data/boundary-boxes.json'
+import countryGeoJsonFile from '../data/countries-geojson.json'
 
 const boundaryBoxData = bbDataFile as BoundaryBoxData
+const boundaryGeoJsonData = countryGeoJsonFile as FeatureCollection
+
+export const getFeatureByAplha2 = (
+    alpha2Code: string | number
+): Feature | [] => {
+    const feature = boundaryGeoJsonData.features.find(
+        (fe) => fe.properties.ISO2 === alpha2Code
+    )
+
+    return feature ? feature : []
+}
 
 export const getBoundsByAlpha2 = (alpha2Code: string | number) => {
     const bb = boundaryBoxData[alpha2Code]?.[1]

@@ -102,10 +102,6 @@ const WorldChart = () => {
     const dispatch = useAppDispatch()
 
     useEffect(() => {
-        console.log('chartData: ', chartData)
-    }, [chartData])
-
-    useEffect(() => {
         setIsDataReady(false)
         dispatch(fetchGlobalTimeline())
             .then((res) => {
