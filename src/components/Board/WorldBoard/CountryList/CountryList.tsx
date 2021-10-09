@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { batch } from 'react-redux'
-import { Statistic, Skeleton } from 'antd'
+import { Statistic, Skeleton, Space } from 'antd'
 import { useAppSelector, useAppDispatch } from '../../../../store/hooks'
 import { fetchAllCountriesAndCovidData } from '../../../../store/country-slice'
 import { fitToBounds } from '../../../../store/map-slice'
@@ -28,7 +28,32 @@ const CountryList = () => {
     return (
         <>
             {loading ? (
-                <Skeleton active />
+                <Space direction='vertical'>
+                    <Skeleton.Button
+                        style={{ width: 335, maxWidth: 335, height: 60 }}
+                        active
+                    />
+                    <Skeleton.Button
+                        style={{ width: 335, maxWidth: 335, height: 60 }}
+                        active
+                    />
+                    <Skeleton.Button
+                        style={{ width: 335, maxWidth: 335, height: 60 }}
+                        active
+                    />
+                    <Skeleton.Button
+                        style={{ width: 335, maxWidth: 335, height: 60 }}
+                        active
+                    />
+                    <Skeleton.Button
+                        style={{ width: 335, maxWidth: 335, height: 60 }}
+                        active
+                    />
+                    <Skeleton.Button
+                        style={{ width: 335, maxWidth: 335, height: 60 }}
+                        active
+                    />
+                </Space>
             ) : (
                 <ul className={classes.List}>
                     {countries.map((country) => (

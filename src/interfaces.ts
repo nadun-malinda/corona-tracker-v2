@@ -89,7 +89,9 @@ export interface ViewState {
     longitude?: number
     pitch?: number
     width?: number
-    zoom?: number
+    zoom: number
+    maxZoom?: number
+    minZoom?: number
     transitionDuration?: 'auto' | number
     transitionInterpolator?: any
 }

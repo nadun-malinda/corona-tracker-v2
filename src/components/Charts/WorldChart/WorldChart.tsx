@@ -1,5 +1,5 @@
 import { useState, useEffect, useReducer } from 'react'
-import { Select } from 'antd'
+import { Select, Skeleton } from 'antd'
 import {
     FrownOutlined,
     CalendarOutlined,
@@ -56,7 +56,7 @@ interface ChartData {
 
 type ACTIONTYPE = { type: TimelineType; payload: TimelineCategory[] }
 
-const defaultTimelineType: TimelineType = 'deaths'
+const defaultTimelineType: TimelineType = 'new_confirmed'
 const initialChartData: ChartData[] = [{ x: '', y: 0 }]
 
 const chartDataReducer = (
@@ -166,20 +166,27 @@ const WorldChart = () => {
     return (
         <div style={{ marginBottom: 20 }}>
             <div style={{ textAlign: 'right', marginBottom: 10 }}>
-                <Select
-                    onChange={onChangeHandler}
-                    defaultValue={defaultTimelineType}
-                    style={{ width: 150, textAlign: 'left' }}
-                >
-                    <Option value='deaths'>Deaths</Option>
-                    <Option value='new_deaths'>New deaths</Option>
-                    <Option value='confirmed'>Confirmed</Option>
-                    <Option value='new_confirmed'>New confirmed</Option>
-                    <Option value='recovered'>Recovered</Option>
-                    <Option value='new_recovered'>New recovered</Option>
-                </Select>
+                {isDataReady ? (
+                    <Select
+                        onChange={onChangeHandler}
+                        defaultValue={defaultTimelineType}
+                        style={{ width: 150, textAlign: 'left' }}
+                    >
+                        <Option value='deaths'>Deaths</Option>
+                        <Option value='new_deaths'>New deaths</Option>
+                        <Option value='confirmed'>Confirmed</Option>
+                        <Option value='new_confirmed'>New confirmed</Option>
+                        <Option value='recovered'>Recovered</Option>
+                        <Option value='new_recovered'>New recovered</Option>
+                    </Select>
+                ) : (
+                    <Skeleton.Button
+                        style={{ width: 150, maxWidth: 335, height: 32 }}
+                        active
+                    />
+                )}
             </div>
-            {isDataReady && (
+            {isDataReady ? (
                 <XYPlot
                     animation='noWobble'
                     height={220}
@@ -268,6 +275,11 @@ const WorldChart = () => {
                         }}
                     />
                 </XYPlot>
+            ) : (
+                <Skeleton.Button
+                    style={{ width: 335, maxWidth: 335, height: 220 }}
+                    active
+                />
             )}
         </div>
     )

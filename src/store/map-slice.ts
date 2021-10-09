@@ -22,6 +22,8 @@ const initialState: MapState = {
         pitch: 0,
         width: 0,
         zoom: 1.5,
+        maxZoom: 10,
+        minZoom: 1.5,
         transitionDuration: 'auto'
     },
     mapWidth: window.innerWidth - BOARD_WIDTH

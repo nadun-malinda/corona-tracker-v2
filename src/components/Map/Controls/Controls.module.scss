@@ -1,0 +1,15 @@
+.Controls {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    z-index: 1;
+    background-color: #03101c;
+    display: flex;
+    flex-direction: column;
+
+    .Icon {
+        font-size: 1.75rem;
+        color: #f5c600;
+        cursor: pointer;
+    }
+}

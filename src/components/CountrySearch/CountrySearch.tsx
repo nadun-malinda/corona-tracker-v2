@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { batch } from 'react-redux'
 import { useAppDispatch } from '../../store/hooks'
 import { fitToBounds } from '../../store/map-slice'
 import { fetchCountryCovid } from '../../store/covid-slice'
@@ -45,8 +46,11 @@ const CountrySearch = () => {
 
     const onSelectHandler = (_: string, option: Option | any) => {
         const { cca2 } = option.data
-        dispatch(fetchCountryCovid(cca2))
-        dispatch(fitToBounds(cca2))
+        batch(() => {
+            dispatch(fetchCountryCovid(cca2))
+            dispatch(fitToBounds(cca2))
+        })
+        setText('')
     }
 
     const onSearchHandler = (value: string) => {
@@ -56,6 +60,7 @@ const CountrySearch = () => {
     return (
         <div className={classes.CountrySearch}>
             <AutoComplete
+                value={text}
                 clearIcon={true}
                 className={classes.Search}
                 options={options}

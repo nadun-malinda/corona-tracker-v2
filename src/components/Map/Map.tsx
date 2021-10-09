@@ -4,6 +4,7 @@ import { setViewState } from '../../store/map-slice'
 import DeckGL from '@deck.gl/react'
 import { FlyToInterpolator, MapView } from '@deck.gl/core'
 import { StaticMap } from 'react-map-gl'
+import Controls from './Controls/Controls'
 import useCountryLayer from './layers/CountryLayerHook'
 import useBorderLayer from './layers/BorderLayerHook'
 import { ViewState, FeatureCollection, Feature } from '../../interfaces'
@@ -55,6 +56,7 @@ const Map = () => {
 
     return (
         <div className={classes.Map}>
+            <Controls />
             <DeckGL
                 viewState={{
                     ...viewState,
