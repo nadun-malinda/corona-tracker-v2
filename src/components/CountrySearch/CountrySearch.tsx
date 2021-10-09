@@ -44,8 +44,6 @@ const CountrySearch = () => {
     }, [debounceSearchText, dispatch])
 
     const onSelectHandler = (_: string, option: Option | any) => {
-        console.log('on select: ', option)
-
         const { cca2 } = option.data
         dispatch(fetchCountryCovid(cca2))
         dispatch(fitToBounds(cca2))

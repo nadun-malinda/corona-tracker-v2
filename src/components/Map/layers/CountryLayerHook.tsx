@@ -24,7 +24,6 @@ const useCountryLayer = (data: FeatureCollection): any => {
             getLineColor: (d) => [0, 0, 0, 0],
             lineWidthMinPixels: 1,
             onClick: (info: any | { object: Feature }) => {
-                console.log('click :', info)
                 batch(() => {
                     dispatch(fetchCountryCovid(info.object.properties.ISO2))
                     dispatch(fitToBounds(info.object.properties.ISO2))

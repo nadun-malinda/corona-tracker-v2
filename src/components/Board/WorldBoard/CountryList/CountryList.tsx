@@ -17,8 +17,7 @@ const CountryList = () => {
         dispatch(fetchAllCountriesAndCovidData())
     }, [dispatch])
 
-    const onClickHandler = ({ cca2, flag, latest }: Country) => {
-        console.log('latest: ', latest)
+    const onClickHandler = ({ cca2 }: Country) => {
         batch(() => {
             dispatch(fetchCountryCovid(cca2))
             dispatch(fitToBounds(cca2))

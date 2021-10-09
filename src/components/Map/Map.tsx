@@ -8,7 +8,6 @@ import useCountryLayer from './layers/CountryLayerHook'
 import useBorderLayer from './layers/BorderLayerHook'
 import { ViewState, FeatureCollection, Feature } from '../../interfaces'
 import { BOARD_WIDTH } from '../../consts'
-// import { json, csv } from 'd3-fetch'
 import countriesGeoJson from '../../data/countries-geojson.json'
 import classes from './Map.module.scss'
 

@@ -94,11 +94,8 @@ export const fetchCountryCovid = (cca2: string): AppThunk => {
 
             const { name, code, population, latest_data, timeline } =
                 response.data.data
-
-            console.log('response: ', response)
             const { countries } = getState().country
             const [country] = countries.filter((c) => c.cca2 === cca2)
-            console.log('flag: ', country)
             dispatch(
                 setCovidCountry({
                     name,
